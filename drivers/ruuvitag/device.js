@@ -69,9 +69,11 @@ class Tag extends Homey.Device {
         let deviceData = this.getData();
         let settings = this.getSettings();
 
-        Homey.ManagerBLE.find(deviceData.uuid, timeout)
+        this.homey.ble.find(deviceData.uuid, timeout)
             .then(bleAdv => {
+                console.log(bleAdv.rssi);
                 this.setCapabilityValue('measure_rssi', bleAdv.rssi);
+                console.log(bleAdv.manufacturerData);
                 return bleAdv.manufacturerData;
             })
             .then(buffer => validateDataFormat(deviceData.dataformat, buffer))
